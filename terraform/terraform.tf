@@ -32,5 +32,5 @@ terraform {
     region = "eu-north-1"
   }
 
-  required_version = "~> 1.6.6"  # Latest Terraform version as of now
+  required_version = "~> 1.6.0"  # Latest Terraform version as of now
 }
