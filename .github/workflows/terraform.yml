@@ -33,7 +33,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Terraform with specified version on the runner
+      - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.6.3
@@ -50,11 +50,13 @@ jobs:
         id: validate
         run: terraform validate
 
-      - name: Terraform Plan
+      - name: Terraform Plan (Debug)
         id: plan
-        run: terraform plan -no-color -input=false -out=planfile
-        continue-on-error: true  # Ensures the pipeline doesn’t fail on errors in `terraform plan`
+        run: |
+          export TF_LOG=DEBUG
+          terraform plan -no-color -input=false -out=planfile
+        continue-on-error: true
 
       - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
+        if: failure()
         run: exit 1
