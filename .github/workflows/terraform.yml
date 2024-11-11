@@ -31,10 +31,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated to latest version
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2  # Updated to latest version
         with:
           terraform_version: 1.6.3
 
@@ -55,8 +55,8 @@ jobs:
         run: |
           export TF_LOG=DEBUG
           terraform plan -no-color -input=false -out=planfile
-        continue-on-error: true
+        continue-on-error: true  # Ensures the job continues if `terraform plan` fails
 
       - name: Terraform Plan Status
-        if: failure()
+        if: steps.plan.outcome == 'failure'  # Updated conditional
         run: exit 1
